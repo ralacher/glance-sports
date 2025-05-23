@@ -58,6 +58,7 @@ async function parseTeam(url, teamId) {
       hour12: true
     }) : null;
     data.shortName = json.team?.nextEvent?.[0]?.shortName || null;
+    data.name = json.team?.nextEvent?.[0]?.name || null;
     return data.date ? data : null;
   } catch (e) {
     console.log("Error parsing data for team ID: " + teamId, e);
