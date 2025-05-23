@@ -11,7 +11,7 @@ const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 
 global.config = config;
 
-app.get('/sports-schedules', async (req, res) => {
+app.get('/sports', async (req, res) => {
   let response = { results: [] };
 
   // Loop over each league in config.json
@@ -39,7 +39,15 @@ async function parseTeam(url, teamId) {
     let data = {};
     data.displayName = json.team?.displayName || null;
     data.logo = json.team?.logos?.[0]?.href || null;
-    data.summary = json.team?.record?.items?.[0]?.summary || null;
+    // summary contains wins-ties?-losses
+    // e.g. 10-2-0
+    // split into wins, ties, losses attributes
+    // ties may not exist, it could just be wins-losses
+    let summary = json.team?.record?.items?.[0]?.summary || null;
+    let parts = summary ? summary.split('-') : [];
+    data.wins = parts[0] || null;
+    data.losses = parts.length === 3 ? parts[2] : (parts[1] || null);
+    data.ties = parts.length === 3 ? parts[1] : null;
     let dateStr = json.team?.nextEvent?.[0]?.date || null;
     data.date = dateStr ? new Date(dateStr).toLocaleString('en-US', {
       month: 'long',
