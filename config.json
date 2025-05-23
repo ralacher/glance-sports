@@ -1,0 +1,19 @@
+{
+    "mlb": {
+        "teams": [15],
+        "url": "http://site.api.espn.com/apis/site/v2/sports/baseball/mlb/teams/"
+    },
+    "nfl": {
+        "teams": [1],
+        "url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/"
+
+    },
+    "mls": {
+        "teams": [18418],
+        "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/teams/"
+    },
+    "ncaaf": {
+        "teams": [61],
+        "url": "https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/"
+    }
+}
