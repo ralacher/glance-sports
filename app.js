@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express()
-const port = 3009
+const port = 3000
 
 // Read and parse config.json once, make globally available
 const configPath = path.join(__dirname, 'config.json');
