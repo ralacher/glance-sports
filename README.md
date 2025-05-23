@@ -13,6 +13,8 @@ This project is a Glance widget that displays upcoming games for major sports le
 - Data sourced from ESPN's unofficial API
 - Simple and lightweight widget
 
+![Widget](assets/widget.png)
+
 ## Getting Started
 
 1. **Install dependencies:**
