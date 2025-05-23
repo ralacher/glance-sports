@@ -15,6 +15,35 @@ This project is a Glance widget that displays upcoming games for major sports le
 
 ![Widget](assets/widget.png)
 
+## Glance Teams Widget Template
+
+Below is the template used for the "Teams" widget in Glance:
+
+```yaml
+- type: custom-api
+  title: "Teams"
+  cache: 1h
+  url: "http://glance-sports:3000/sports"
+  template: |
+    <ul class="list list-gap-10 collapsible-container" data-collapse-after="5">
+    {{ range .JSON.Array "results" }}
+      <li style="display: flex; align-items: flex-start;" class="text-truncate">
+        <img src="{{ .String "logo" }}" width="25px" height="25px" style="margin-right:8px; margin-top:2px;" />
+        <div>
+          <p class="size-h4 color-highlight block text-truncate" style="margin: 0;">{{ .String "name" }}</p>
+          <ul class="list-horizontal-text" style="margin: 0;">
+            <li>{{ .String "date" }}</li>
+          </ul>
+          <ul class="list-horizontal-text">
+            <li>{{ .String "standingSummary" }}</li>
+            <li><span class="color-positive">{{ .String "wins" }}</span>{{ if .String "ties" }}-<span class="color-neutral">{{ .String "ties" }}</span>{{ end }}-<span class="color-negative">{{ .String "losses" }}</span></li>
+          </ul>
+        </div>
+      </li>
+    {{ end }}
+    </ul>
+```
+
 ## Getting Started
 
 1. **Install dependencies:**
@@ -54,3 +83,4 @@ This ensures your configuration is used inside the container.
 
 ## License
 MIT License
+
