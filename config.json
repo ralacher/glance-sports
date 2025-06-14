@@ -15,5 +15,9 @@
     "ncaaf": {
         "teams": [61],
         "url": "https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/"
+    },
+    "conmebol": {
+        "teams": [208],
+        "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.worldq.conmebol/teams/"
     }
 }
