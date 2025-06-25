@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express()
-const port = 3001
+const port = 3000
 
 // Read and parse config.json once, make globally available
 const configPath = path.join(__dirname, 'config.json');
@@ -32,8 +32,26 @@ app.get('/sports', async (req, res) => {
   // Date is in the format 'Month Day, Year, HH:MM AM/PM'
   // Convert to Date object for sorting
   response.results.sort((a, b) => {
-    return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
   });
+  
+  // Convert the dates to Month Day, Year, HH:MM AM/PM format
+  response.results = response.results.map(item => {
+    if (item.date) {
+      const dateObj = new Date(item.date);
+      item.date = dateObj.toLocaleString('en-US', {
+        month: 'long',
+        day: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+        timeZone: process.env.TIMEZONE || 'America/New_York' // Use environment variable
+      });
+    }
+    return item;
+  });
+  console.debug("Response: ", response);
 
   res.json(response);
 })
@@ -56,11 +74,12 @@ async function parseTeam(url, teamId) {
     data.wins = parts[0] || null;
     data.losses = parts.length === 3 ? parts[2] : (parts[1] || null);
     data.ties = parts.length === 3 ? parts[1] : null;
-    let dateStr = json.team?.nextEvent?.[0]?.date || null;
 
     // Use environment variable for timezone, default to 'America/New_York'
     const timeZone = process.env.TIMEZONE || 'America/New_York';
-    data.date = dateStr ? new Date(dateStr).toLocaleString('en-US', {
+
+    data.date = json.team?.nextEvent?.[0]?.date || null;
+    /*data.date = dateStr ? new Date(dateStr).toLocaleString('en-US', {
       month: 'long',
       day: '2-digit',
       year: 'numeric',
@@ -68,7 +87,7 @@ async function parseTeam(url, teamId) {
       minute: '2-digit',
       hour12: true,
       timeZone: timeZone
-    }) : null;
+    }) : null;*/
     data.shortName = json.team?.nextEvent?.[0]?.shortName || null;
     data.name = json.team?.nextEvent?.[0]?.name || null;
     data.standingSummary = json.team?.standingSummary || null;
