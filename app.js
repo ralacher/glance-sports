@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express()
-const port = 3000
+const port = 3001
 
 // Read and parse config.json once, make globally available
 const configPath = path.join(__dirname, 'config.json');
@@ -27,6 +27,14 @@ app.get('/sports', async (req, res) => {
       }
     }
   }
+
+  // Sort results by date from newest to oldest
+  // Date is in the format 'Month Day, Year, HH:MM AM/PM'
+  // Convert to Date object for sorting
+  response.results.sort((a, b) => {
+    return new Date(b.date) - new Date(a.date);
+  });
+
   res.json(response);
 })
 
@@ -70,6 +78,11 @@ async function parseTeam(url, teamId) {
     return null;
   }
 }
+
+// New route that always returns 400 Bad Request with 'Invalid Request' error
+app.get('/bad-request', (req, res) => {
+  res.status(400).json({ error: 'Invalid Request' });
+});
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
